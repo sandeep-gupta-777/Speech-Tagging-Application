@@ -1,0 +1,57 @@
+header {
+    border-bottom: 1px solid white !important;
+}
+
+.main-header-text {
+    color: rgba(0, 0, 0, 0.61);
+}
+
+.control-box {
+    border-right: 1px solid #d4d4d4;
+}
+
+.result-display-box {
+    height: 100%;
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+.result-block {
+    /*border: 1px solid red;;*/
+    padding-left: 30px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    min-height: 50px;
+
+}
+
+.result-block p, .result-block h5 {
+    padding: 0;
+    margin: 0;
+}
+
+.title {
+    font-size: 13px;
+    color: #6c757d;
+    padding-right: 10px !important;
+}
+
+.result-text {
+    color: #245c57;
+}
+
+.instruction-text {
+    font-size: 10px;
+}
+
+.fa-cloud-upload {
+    font-size: 25px;;
+    border: 1px solid red;
+}
+
+.fa-cloud-upload-box {
+    height: 40px;
+    display: flex;
+    align-items: center;
+
+}

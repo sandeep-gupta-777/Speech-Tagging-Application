@@ -1,0 +1,19 @@
+.center-x-y{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mb-30{
+    margin-bottom: 30px;
+}
+.mt-15{
+    margin-bottom: 15px !important;
+}
+.mb-15{
+    margin-bottom: 15px;
+}
+.border1{
+    border: 1px solid red;
+}

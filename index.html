@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech Tagging System</title>
+    <link rel="stylesheet" href="bootstrap4/css/bootstrap.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="bootstrap4/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="utility.css">
+    <link rel="stylesheet" href="bootstrap-override.css">
+    <link rel="stylesheet" href="file-upload-button.css">
+    <link rel="stylesheet" href="base.css">
+
+</head>
+<body class="">
+<header class="container p-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-12 header-text-box d-flex justify-content-center">
+            <h2 class="main-header-text">Speech Tagging Application</h2>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="row">
+            <!--control-box starts-->
+            <section class="col-12 col-md-6 control-box p-5">
+                <div class="col-12 mb-30 d-flex flex-column align-items-center justify-content-center">
+                    <p class="pb-1 mb-1">Choose Your Language</p>
+                    <div class="dropdown" id="country-select">
+                        <!-- to find the value use: $('#choose-language-button').text();-->
+                        <button type="button" id="choose-language-button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            Choose
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">Telugu</a>
+                            <a class="dropdown-item">English</a>
+                            <a class="dropdown-item">Hindi</a>
+                        </div>
+                    </div>
+                </div>
+                <form class="col-12 mb-15 d-flex flex-column align-items-center justify-content-center"
+                      method="POST">
+                    <p class="pb-1 mb-1">Upload audio file</p>
+                        <label for="file" id="file-selected" class="custom-file-upload border1">Select Files</label>
+                        <span onclick="checkforblank()" class="fa-cloud-upload-box"><i class="fa fa-cloud-upload text-muted border"></i></span>
+
+                    <input id="file" type="file"/>
+                </form>
+
+                <div class="col-12 mb-15 mt-15 d-flex flex-row align-items-center justify-content-center">
+                    <div class="col-5">
+                        <hr>
+                    </div>
+                    <div class="col-1 d-flex flex-row align-items-center justify-content-center">OR</div>
+                    <div class="col-5">
+                        <hr>
+                    </div>
+                </div>
+                <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                    <p class="pb-2 mb-0">Record Audio</p>
+                    <div class="d-flex">
+                        <button class="btn btn-success mr-3" id=startRecord  onclick="startRecording()">Rec</button>
+                        <button class="btn btn-danger" id=stopRecord onclick="stopRecording()" >Stop</button>
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <p class="text-muted text-center instruction-text">Record an audio or upload a .wav file with less
+                        than 10 sec duration for best performance</p>
+                </div>
+            </section>
+            <!--control-box ends-->
+
+            <!--display box starts-->
+            <section class="col-12 col-md-6  p-5">
+                <div class="result-display-box d-flex flex-column justify-content-center">
+                    <div class="result-block text-muted">
+                        <h5 class="title">Original Text:</h5>
+                        <p class="result-text p-0 m-0">This is original text</p>
+                    </div>
+                    <div class="result-block">
+                        <h5 class="title">Text:</h5>
+                        <p class="result-text">This is original text</p>
+                    </div>
+                    <div class="result-block">
+                        <h5 class="title">Speech Tags:</h5>
+                        <p class="result-text">This is original text</p>
+                    </div>
+                    <div class="result-block">
+                        <h5 class="title">Processing Time:</h5>
+                        <p class="result-text">This is original text</p>
+                    </div>
+                </div>
+            </section>
+            <!--display box starts-->
+
+        </div>
+    </div>
+    <script>
+        function checkforblank(){
+            if(document.getElementById('file').value==""){
+                alert('please choose a valid file');
+            }
+            else{
+                submit(blob);
+            }
+            return false;
+            // document.getElementByID('file').style.borderColor="red";
+        }
+        // TODO: This needs work. Submit button currently does not do anything.
+        // Also, page does not get reloaded and therefore the results are not shown.
+        // The POST request has to be done without AJAX.
+        rec=null
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({
+                audio: true
+            })
+                .then(stream => {
+                    aCtx = new AudioContext();
+                    streamSource = aCtx.createMediaStreamSource(stream);
+                    rec = new Recorder(streamSource);
+                    startRecord.disabled = true;
+                    stopRecord.disabled = false;
+                    audio = [];
+                    recordedAudio.controls = false;
+                    rec.record();
+                })
+                .catch(e => console.log(e));
+
+
+        }
+
+        function stopRecording() {
+            startRecord.disabled = false;
+            stopRecord.disabled = true;
+
+            rec.stop()
+            rec.exportWAV((blob) => {
+                // now we could send this blob with an FormData too
+                $("#absolute1").css("display","None")  // $("#audio").css("display:block")
+                recordedAudio.src = URL.createObjectURL(blob);
+
+                recordedAudio.controls = true;
+
+                //audioDownload.href = recordedAudio.src;
+                //audioDownload.download = 'muthootasr17283.wav';
+                //audioDownload.innerHTML = 'Download';
+                submit(blob);
+            });
+            return false;
+        }
+
+        function submit(blob) {
+
+            var fd = new FormData();
+
+            var val_lang = $("#country-select").val();
+            //base64data = reader.result;
+            //console.log(base64data);
+            fd.append('file', blob, 'muthootasr17283.wav');
+
+            $.ajax({
+                type: 'POST',
+                url: 'https://localhost:7000',       //172.16.250.83:7000 changes done
+                data: fd,
+                cache: false,
+                processData: false,
+                contentType:false,
+                enctype: 'multipart/form-data',
+                headers: { 'lang': val_lang }
+            }).done(function(data) {
+                $("#trans0").text(data["original_text"]);   // changes
+                $("#trans").text(data["asr"]);
+                $("#trans1").text(data["tag"]);
+                $("#trans2").text(data["processing_time"]);
+
+
+                $("#transcript").css("display",data["vis"]);
+
+                /* if(data.redirect){
+                           window.location.href = data.redirect;
+           return false;				}*/
+
+                // var time= stop - start ;
+                // console.log(time);
+            });
+            return false;
+        }
+
+    /*display elements cache*/
+    let originalText$ = $('trans0');
+    let text$ = $('trans1');
+    let tags$ = $('trans2');
+    let processingTime$ = $('trans');
+
+
+    </script>
+
+
+</main>
+<!--all custom script will be included here-->
+<script src="bootstrap-override.js"></script>
+<script src="recorder.js"></script>
+
+</body>
+</html>

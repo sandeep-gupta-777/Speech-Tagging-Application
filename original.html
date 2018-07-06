@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ASR</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <script src="https://localhost:7000/static/recorder.js"></script>
+ 
+<style>
+  body {
+      background-color: white;
+      
+}
+
+
+body{
+    font-family: 'Raleway',sans-serif;
+    background:url("static/logos/sptxt.jpg") no-repeat;
+    background-size:100% ;
+  
+   
+}
+*{
+    padding:0px;
+    margin:0px;
+}
+#image h1 {
+    text-decoration: none;
+    color:white;
+}
+#image h1{
+    float:left;
+    margin-left:15px;
+    margin-top:10px;
+    font-size:2.5em;
+}
+ #image {
+    width:100%;
+    height:60px;
+    line-height: 60px;
+    background-color: #0e5d6054;
+}
+#main-content{
+    width:100%;
+    height: 60px;
+    
+ 
+    text-align:center;
+    line-height:20px;
+    color:black;
+}
+label{
+  font-size:12px;
+}
+  #absolute {
+    width: 45%;
+    height:260px;
+    margin-left:25px;
+    margin-top:30px;
+    font-size:10px;
+    background-color:rgb(255, 255, 255, 0.02);
+    padding-right: 40px;
+    float: left;
+}
+#absolute h5 strong{
+    padding-right:37px;
+}
+#audio{
+top: 210px;
+left: 65px;
+font-size: 10px;
+
+
+}
+#absolute1 {
+position: absolute;
+top: 290px;
+left: 60px;
+
+}
+#transcript{
+width:50%;
+top: 400px;
+left: 60px;
+font-style:bold;
+font-size:1.2em;
+padding: 3px;
+float:right;
+}
+
+
+	
+
+
+  </style>
+</head>
+<body  style="width:100%;">
+ <div id="image" class="container">
+ 
+  <!--<img src="https://www.ramsoft.com/wp-content/uploads/2016/03/voice-recognition-ramsoft-icon1.png" height= "75" width="100"   style="float:left;"/>-->
+  <h1>Speech Tagging System</h1>
+<br/>
+<br/>
+<!-- <h4 style="font-family:Lucida Calligraphy;">Upload a .wav file with less than 10sec duration for best performance</h4> -->
+ </div>
+
+ <div id="main-content" style="color:white;">
+        <h4>Record an audio/Upload a .wav file with less than 10sec duration for best performance</h4>
+
+<div id="absolute" class="container" style="display:block;color:white;">
+
+
+    <div  style="margin-right:40px;">          <!--changes from 111 to 120-->
+        <h7> <label>Choose your language</label></h7>
+         <select id="country-select" data-placeholder="Choose a Language..."style="padding-left:30px;padding-right:30px;padding-top:5px;padding-bottom:5px;color:black;">
+             <option selected="selected">Choose your language</option>
+             <option value="te-IN">TELUGU</option>
+             <option value="en-IN">ENGLISH</option>
+             <option value="hi-IN">HINDI</option>
+           </select>
+           <input id="lang" value="Select" type="button" style="padding-left:10px;padding-right:10px;color:black;   border-width: 3px 3px 3px 3px; border-color: floralwhite;"/>
+       </div>
+ 
+
+  <h5><strong>Upload your audio file below</strong></h5>
+    <form method="POST" action="." enctype="multipart/form-data" class="form-inline" onSubmit="checkforblank()">
+         <div class="form-group">
+                    <input name="file" id="file" type="file" class="form-control" style="font-size:12px;background-color:#ececece5;padding-right:53px;padding-top:2px;width:auto;height:28px"/>
+            <input type="submit" name="Submit"  value="Submit" style="margin-right:40px;padding-right:20px;padding-left:20px;margin-top:20px;color:black;border-width: 3px 3px 3px 3px; border-color: floralwhite;"/>  
+         </div>      
+    </form>
+<h5><strong>Or</strong></h5>
+                    <div id="audio" style="display:block;">
+                      <h5><strong>Record your audio here</strong></h5>
+                      <input type="button" id=startRecord value="Start Rec" onclick="startRecording()" style="padding-left:30px;padding-right:30px;margin-right:43px;color:green;border-width: 3px 3px 3px 3px; border-color: floralwhite;"/>
+                      <input type="button" id=stopRecord value="Stop Rec"onclick="stopRecording()" style="color:red;padding-left:30px;padding-right: 30px;margin-right:50px;margin-top:20px;border-width: 3px 3px 3px 3px; border-color: floralwhite;"/>
+                    </div>
+  <p>
+    <audio id=recordedAudio style="margin-right:57px;margin-top:20px;"></audio>
+  </p>
+  <!-- <p>
+    <a id=audioDownload></a>
+  </p> -->
+  <br/>
+  
+</div>
+            <!--changed from 176 line to 181-->
+
+</div>
+
+
+<div id="absolute1"  style="display:None;">
+
+  <form method="POST" action="feedback"  >
+  
+  
+  <div class="container form-group"style="overflow-y:auto;">
+    <label>correct the transcript</label>
+	<textarea class="form-control" rows="2" placeholder="Please provide transcript for feedback:" name="feedback" style="overflow-y:auto;background-color:#ddeeee;font:1.2em  Calibri;border:2px inset #ddeeee;"required>{{kalditranscript}}</textarea>
+	</div>
+	<div class="btn-group-vertical">
+    <input type="submit" name="Submit" value="Submit" style="background-color:#ddeeee;">
+	</div>
+  </form>
+ 
+
+</div>
+
+
+ <div id="transcript" class="container"  style="background-color:rgb(218, 218, 218);width:50%;border:2px inset #ddeeee;padding-left:10px;display:{{vis}} ;">
+     <h4><strong>Original Text:</strong><i id="trans0" style="background-color:rgba(102, 102, 102, 0.3);">{{original_text}}</i></h4> 
+  <h4><strong>Text: </strong><i id="trans">{{asr}}</i></h4>
+   <h4><strong>Speech Tags: </strong><i id="trans1">{{tag}}</i><h4>
+    <h4><strong>Processing Time: </strong><i id="trans2">{{processing_time}}</i><h4>  
+
+<!-- <ul id="trans" style="display:None;list-style-type:square;max-height:118px;overflow-y:auto;">
+{%for transcript in transcripts%}
+<li>{{transcript}}</li>
+{%endfor%}
+</ul>
+<h4><strong>Kaldi Fischer</strong></h4>
+<ul id="trans1" style="display:None;list-style-type:square;max-height:118px;overflow-y:auto;">
+{%for transcript1 in transcripts1%}
+<li>{{transcript1}}</li>
+{%endfor%}
+</ul> -->
+</div>
+
+</div>
+<script>
+      function checkforblank(){
+  if(document.getElementById('file').value==""){
+  alert('please choose a valid file');
+  }
+  else{
+      submit(blob);
+  }
+    return false;
+  // document.getElementByID('file').style.borderColor="red";
+}
+// TODO: This needs work. Submit button currently does not do anything.
+// Also, page does not get reloaded and therefore the results are not shown.
+// The POST request has to be done without AJAX.
+rec=null
+function startRecording() {
+  navigator.mediaDevices.getUserMedia({
+  audio: true
+})
+.then(stream => {
+  aCtx = new AudioContext();
+  streamSource = aCtx.createMediaStreamSource(stream);
+  rec = new Recorder(streamSource);
+  startRecord.disabled = true;
+  stopRecord.disabled = false;
+  audio = [];
+  recordedAudio.controls = false;
+  rec.record();
+  })
+  .catch(e => console.log(e));
+  
+  
+}
+
+function stopRecording() {
+  startRecord.disabled = false;
+  stopRecord.disabled = true;
+  
+  rec.stop()
+  rec.exportWAV((blob) => {
+  // now we could send this blob with an FormData too
+    $("#absolute1").css("display","None")  // $("#audio").css("display:block") 
+  recordedAudio.src = URL.createObjectURL(blob);
+  
+  recordedAudio.controls = true;
+  
+  //audioDownload.href = recordedAudio.src;
+  //audioDownload.download = 'muthootasr17283.wav';
+  //audioDownload.innerHTML = 'Download';
+  submit(blob);
+});
+return false;
+}
+
+function submit(blob) {
+   
+    var fd = new FormData();
+    
+	  var val_lang = $("#country-select").val();
+    //base64data = reader.result;
+    //console.log(base64data);
+    fd.append('file', blob, 'muthootasr17283.wav');
+  
+    $.ajax({
+      type: 'POST',
+      url: 'https://localhost:7000',       //172.16.250.83:7000 changes done
+      data: fd,
+      cache: false,
+      processData: false,
+      contentType:false,
+      enctype: 'multipart/form-data',
+	    headers: { 'lang': val_lang }
+    }).done(function(data) {
+      $("#trans0").text(data["original_text"]);   // changes
+       $("#trans").text(data["asr"]);
+       $("#trans1").text(data["tag"]);
+       $("#trans2").text(data["processing_time"]);
+
+
+      $("#transcript").css("display",data["vis"]);
+    
+	 /* if(data.redirect){
+				window.location.href = data.redirect;
+return false;				}*/
+    
+   // var time= stop - start ;
+   // console.log(time);
+  });
+    return false;
+   }
+  
+
+
+
+ 
+
+</script>
+
+
+</body>
+</html>

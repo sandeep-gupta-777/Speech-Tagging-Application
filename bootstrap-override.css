@@ -1,0 +1,9 @@
+.btn-primary{
+    background-color: #0facf3 !important;
+}
+.btn-success{
+    background-color: rgba(24, 150, 53, 0.5) !important;
+}
+.btn-danger{
+    background-color: rgba(156, 39, 39, 0.5) !important;
+}
